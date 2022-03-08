@@ -17,7 +17,9 @@
                <editor api-key="77bvlwqw98a7l3nd933zih3vcr04gyobuhp0m6h4rfpn1z3m" 
                 cloud-channel="5-dev"
                 :disabled="true"
-                :init= "{  }"
+                :init= "{ 
+
+                 }"
                 initial-value=""
                 :inline="true"
                 model-events= ""

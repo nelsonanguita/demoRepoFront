@@ -1,8 +1,7 @@
 <template>
   <v-app >
     <v-app-bar app color="teal" dark>
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" dark></v-app-bar-nav-icon>
-      <v-toolbar-title>MENU</v-toolbar-title>
+     
     </v-app-bar>
    
         

@@ -11,8 +11,7 @@ export default {
     components:{
         'edicionMetodo': EdicionMetodo
     },
-    
-}
+    }
 </script>
 
 <style>

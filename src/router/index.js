@@ -11,20 +11,20 @@ const routes = [
     component: Home
   },
   {
-    path: '/metodos',
-    name: 'Metodos',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/Metodos.vue')
-  },
-  {
     path: '/listadoMetodos',
     name: 'ListadoMetodos',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/ListadoMetodos.vue')
+  },
+  {
+    path: '/edicionMetodo',
+    name: 'EdicionMetodo',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '../views/EdicionMetodo.vue')
   },
   {
     path: '/about',

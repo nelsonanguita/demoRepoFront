@@ -18,16 +18,9 @@ v-container
                                 v-textarea( outlined  label="Descripción Breve" :rules="[(v) => !!v || 'Descripcion es requerido']" v-model="metodoToEdit.description")
                         v-row
                             v-col
-                                editor( :init="{height:'300px'}"
-                                    :api-key="api"
-                                    v-model="metodoToEdit.contenthtml"
-                                    :value="metodoToEdit.contenthtml"
-                                )
+                                vue-editor(  height="300px" v-model="metodoToEdit.contenthtml" )
+                        
                         v-row        
-                            v-vol
-                                div
-                                    v-btn( @click="setEditorContent" Set Editor Contents)
-                                    vue-editor(v-model="metodoToEdit.contenthtml" :value="metodoToEdit.contenthtml")
                                 
 
 
@@ -43,6 +36,7 @@ v-container
                     v-btn(text type="submit" color="primary" @click="delMetodo(metodoToDel.id)") ACEPTAR
     v-row(justify="center")
         v-dialog(v-model="showNuevo")
+           
             v-card
                 v-card-title Crear Nuevo Método
                 v-card-text
@@ -55,57 +49,44 @@ v-container
                                 v-textarea( outlined  label="Descripción Breve" :rules="[(v) => !!v || 'Descripcion es requerido']" v-model="metodoToAdd.description")
                         v-row
                             v-col
-                                editor( 
-                                    :api-key="api" 
-                                    :init="{height:'300px'}"
-                                     v-model="content"
-                                     
-                                    )
-                                c-vol
-                                    div
-                                        v-btn( @click="setEditorContent" Set Editor Contents)
-                                        vue-editor(v-model="htmlForEditor" :value="content")
-
+                               
+                                vue-editor(v-model="content")
+                               
                     v-card-actions
                         v-btn(text color="error" @click="showNuevo=false") CERRAR
                         v-btn(text type="submit" color="primary" @click="addMetodo()") GUARDAR
 
-                        
+
+
     v-row(justify="center")
-        v-dialog(v-model="show"  max-width="850px" max-height="800")
+        v-dialog(v-model="show"  max-width="600px" max-height="600")
+            
             v-card(max-width="100%" )
-                v-card-title( class="text-h5" color="primary") {{metodoSel.name}}
+
+                v-toolbar(color="blue" dark dense flat)
+                    v-toolbar-title {{metodoSel.name}}
+                
                 v-card-subtitle(class="subtitle")  {{metodoSel.description}}
-                v-divider
                 v-card-text
-                    editor(
-                        :api-key="api"
-                        cloud-channel="5-dev"
-                        :disabled="true"
-                        :init= "{  }"
-                        initial-value=""
-                        :inline="true"
-                        model-events= ""
-                        plugins=""
-                        tag-name=""
-                        toolbar=""
-                        :value="metodoSel.contenthtml"
-                    )  
-                v-divider
+                    <span v-html="metodoSel.contenthtml"></span>
                 v-card-actions
-                v-btn(text color="primary" @click="show=false") CERRAR
-                v-row(justify="center")
-                v-row(class="text-center")
+                    v-btn(text color="primary" @click="show=false") CERRAR
+                        v-icon(dark left x-small) mdi-checkbox-marked-circle
+                        
+                        
+
+
+
+
 
         v-col(class="mb-1" cols="12")
-            h2(class="headline font-weight-bold mb-3") LISTADO DE METODOS
+            h2(class="headline font-weight-bold mb-3 text-center" ) LISTADO DE METODOS
 
         v-col(class="mb-5" cols="12")
 
             v-card 
                 v-card-title
-
-                    v-text-field(v-model="search" label="Buscar" prepend-icon="mdi-layers-search")
+                    v-text-field(v-model="search" label="Buscar" prepend-icon="mdi-magnify")
 
                 v-data-table(:headers="headers" :items="metodos" :search="search")
                     <template v-slot:item.actions="{ item }">
@@ -116,37 +97,41 @@ v-container
 </template>
 
 <script>
-import Editor from '@tinymce/tinymce-vue';
+
 import { VueEditor } from "vue2-editor";
-
-
 export default {
-    data() {
-        return {
-            api:"2f0450kdi98jn27mmablzpwoqtgriuyc7s4p3hrsh38wp77p",
-            editShow: false,
-            metodoToDel: {},
+components: {
+    VueEditor
+  },
+      data() {
+    return {
+        content: "",
+        metodos: [],
+        alert: {
+                type: 'success',
+                message: '',
+                show: false,
+            },
+            editShow:false,
             metodoToEdit: {},
-            content: '',
+            metodoToDel: {},
+            metodoSel: {
+                 name: '',
+                description: '',
+                contenthtml: ''
+            }
+            ,
             delShow: false,
-            editShow: false,
+            metodoToDel: {},
+            showNuevo: false,
+            show: false,
+            search: '',
             metodoToAdd: {
                 name: '',
                 description: '',
                 contenthtml: '',
                 id_usuario: 1,
             },
-            alert: {
-                type: 'success',
-                message: '',
-                show: false,
-            },
-            showNuevo: false,
-            nuevo: false,
-            search: '',
-            show: false,
-            content: '',
-            metodoSel: {},
             headers: [{
                     text: "Nombre",
                     value: "name"
@@ -156,22 +141,21 @@ export default {
                     value: "description"
                 },
                 {
-                    text: "Actions",
+                    text: "Acciones",
                     value: "actions",
                     sortable: false
                 },
             ],
-            metodos: [],
-        }
-    },
-    created: async function () {
+    };
+  },
+  created: async function () {
 
         //se debe validar usuario registrado sino hay session no puede modificar registros.
         try {
             const res = await this.axios.post("/metodos/todos");
             this.metodos = res.data.metodos;
 
-            console.log("created")
+            //console.log("created")
             //console.log(this.metodos);
 
         } catch (error) {
@@ -180,14 +164,18 @@ export default {
 
     },
 
-    methods: {
-        MostrarMetodo(item) {
+  methods: {
+    saveContent: function() {
+      // You have the content to save
+      console.log(this.content);
+    },
+    MostrarMetodo(item) {
             //console.log(item);
             this.metodoSel = item;
             this.show = true;
 
         },
-        async addMetodo() {
+    async addMetodo() {
             let valid = this.$refs.fromAddMetodo.validate();
             if (valid) {
                 this.metodoToAdd.contenthtml = this.content;
@@ -271,10 +259,11 @@ export default {
 
         }
 
-    },
-    components: {
-        'editor': Editor,
-        VueEditor
-    }
 }
+}
+
 </script>
+
+<style>
+
+</style>

@@ -61,10 +61,6 @@ v-container
     v-row(justify="center")
         v-dialog(v-model="show"  max-width="600px" max-height="600")
             
-            
-
-
-
             v-card(max-width="100%" )
 
                 v-toolbar(color="blue" dark dense flat)
@@ -74,8 +70,10 @@ v-container
                 v-card-text
                     <span v-html="metodoSel.contenthtml"></span>
                 v-card-actions
-                    v-btn(text color="primary" @click="show=false") CERRAReeee
-                  
+                    v-btn(text color="primary" @click="show=false") CERRAR
+                        v-icon(dark left x-small) mdi-checkbox-marked-circle
+                        
+                        
 
 
 

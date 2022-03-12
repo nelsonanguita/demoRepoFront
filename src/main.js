@@ -16,10 +16,8 @@ Vue.use(QuasarTiptapPlugin, {
   spellcheck: true
 })
 
-axios.defaults.baseURL = 'http://localhost:4003'
+axios.defaults.baseURL = 'http://localhost:3000'
 Vue.config.productionTip = false
-
-
 
 new Vue({
   router,

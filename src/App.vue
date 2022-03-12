@@ -1,20 +1,6 @@
 <template>
   <v-app>
-    
-      <v-app-bar
-      dark
-      absolute
-      dense
-    >
-
-      <v-toolbar-title></v-toolbar-title>
-             <v-spacer></v-spacer>
-             <v-btn icon>
-        <v-icon>mdi-account-circle-outline</v-icon>
-      </v-btn>
-    </v-app-bar>
-    
-    
+    <barlogin/>
     <cabecera/>
     <v-main>
       <v-container fluid>
@@ -26,10 +12,13 @@
 
 <script>
 import Cabecera from "./components/Cabecera.vue";
+import barlogin from "./components/barlogin.vue";
+
 export default {
   name: "App",
   components: {
     cabecera: Cabecera,
+    barlogin
   },
   data: () => ({
     //

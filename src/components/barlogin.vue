@@ -134,6 +134,8 @@ export default {
         logout() {
             const res =this.$store.dispatch('logout');
             this.showBtnLogin = true;
+            this.$router.push("/");
+
         },
         async login() {
             let valid = this.$refs.formLogin.validate()

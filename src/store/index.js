@@ -18,10 +18,10 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    //metodos
     async login({ commit },credentials) {
         try {
           const res = await axios.post('/api/auth/login', credentials);
-          //console.log(res);
           commit("SET_USER", res.data);
           return true
         } catch (error) {

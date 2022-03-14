@@ -168,7 +168,7 @@ export default {
 
         //se debe validar usuario registrado sino hay session no puede modificar registros.
         try {
-            const res = await this.axios.post("/metodos/todos");
+            const res = await this.axios.get("api/methods/");
             this.metodos = res.data.metodos;
 
             console.log("created")
@@ -192,7 +192,7 @@ export default {
             if (valid) {
                 this.metodoToAdd.contenthtml = this.content;
                 try {
-                    const res = await this.axios.post('/metodos/nuevo', this.metodoToAdd);
+                    const res = await this.axios.post('api/methods/', this.metodoToAdd);
                     //console.log(res.data.record);
                     this.metodos.push(res.data.record);
                     this.content = '';

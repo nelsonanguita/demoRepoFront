@@ -2,8 +2,9 @@
 <v-container>
     <v-app-bar dark fixed dense>
         <v-spacer></v-spacer>
-        <v-btn v-show="!$store.state.auth" icon @click="dialog=true">
+        <v-btn v-show="!$store.state.auth" outlined  @click="dialog=true" color="primary">
             <v-icon>mdi-account-circle-outline</v-icon>
+             Login 
         </v-btn>
         <div v-if="$store.state.auth">
             <v-col cols="4" sm="2" md="1">

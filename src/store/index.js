@@ -23,6 +23,7 @@ export default new Vuex.Store({
         try {
           const res = await axios.post('/api/auth/login', credentials);
           commit("SET_USER", res.data);
+          localStorage.setItem('user',JSON.stringify(res.data));
           return true
         } catch (error) {
           console.log(error);
@@ -31,8 +32,17 @@ export default new Vuex.Store({
         }
     },
 
-    logout({ commit}) { 
+    logout({ commit }) { 
+      localStorage.setItem('user', null);
       commit("SET_USER", null);
+
+    },
+    readStorage({ commit}) { 
+      if (localStorage.getItem('user')) {
+        commit("SET_USER", JSON.parse(localStorage.getItem('user')));
+      } else { 
+        commit("SET_USER", null);
+      }
     }
 
 

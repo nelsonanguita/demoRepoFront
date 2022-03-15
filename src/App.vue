@@ -23,9 +23,18 @@ export default {
     menuNavegation: Menu,
     barlogin: Barlogin
   },
+  created(){
+    this.readLocalStorage();
+  },
   data: () => ({
+
     //
   }),
+  methods:{
+    readLocalStorage(){
+      this.$store.dispatch('readStorage');
+    }
+  }
 };
 </script>
 <style scoped>

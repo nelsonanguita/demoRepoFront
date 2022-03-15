@@ -1,8 +1,12 @@
 <template>
 <v-container>
-    <v-app-bar dark fixed dense>
+    <v-app-bar 
+    dark 
+    fixed 
+    dense
+    >
         <v-spacer></v-spacer>
-        <v-btn v-show="!$store.state.auth" outlined  @click="dialog=true" color="primary">
+        <v-btn v-show="!$store.state.auth" outlined  @click="dialog=true" color="green">
             <v-icon>mdi-account-circle-outline</v-icon>
              Login 
         </v-btn>
@@ -49,7 +53,7 @@
         </div>
 
     </v-app-bar>
-    <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
+        <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
         <v-card>
             <v-toolbar dark>
                 <v-toolbar-title>Login</v-toolbar-title>
@@ -63,7 +67,7 @@
                 <v-col cols="12" md="6">
                     <v-card-text class="mt-12">
                         <v-form ref="formLogin">
-                            <v-img :src="require('../assets/logo.png')" class="my-3" contain height="140" />
+                            <v-img :src="require('@/assets/logo.svg')" class="my-3" contain height="140" />
                             <h3 class="text-center">Login in to Your Account</h3>
                             <h5 class="text-center  grey--text ">Log in to your account so you can continue builiding <br>and editing yours documents</h5>
                             <v-row v-show="Showfrom" align="center" justify="center" margin-top="10" margin-bottom="">
@@ -98,7 +102,10 @@
                 </v-col>
             </v-row>
         </v-card>
+    
     </v-dialog>
+
+
 </v-container>
 </template>
 

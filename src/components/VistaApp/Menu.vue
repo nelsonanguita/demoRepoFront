@@ -8,7 +8,7 @@
       expand-on-hover
     >
       <v-app-bar dark absolute permanent dense>
-        <v-app-bar-nav-icon></v-app-bar-nav-icon>
+       
       </v-app-bar>
 
       <v-list
@@ -52,7 +52,7 @@
                 <v-list-item-content>
                   <v-list-item-title
                 
-                   >4D</v-list-item-title>
+                   >4D  - Categoria</v-list-item-title>
                 </v-list-item-content>
               </template>
 
@@ -65,7 +65,6 @@
               >
                 <v-list-item-icon>
                   <v-icon
-                  
                   >{{ item.icon }}</v-icon>
                 </v-list-item-icon>
                 <v-list-item-title v-text="item.name"></v-list-item-title>
@@ -97,7 +96,7 @@
 <script>
 export default {
   data: () => ({
-    items1: [
+    items1221: [
       {
         path: "/",
         name: "Home",

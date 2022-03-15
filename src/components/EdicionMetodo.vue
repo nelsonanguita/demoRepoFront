@@ -1,5 +1,5 @@
 <template lang="pug">
-v-container 
+v-container(class="my-6") 
     v-alert(v-model="alert.show" :type="alert.type" dismissible) {{alert.message}}
 
     v-btn(fab fixed color="success" :right="true" bottom @click="showNuevo=true")
@@ -152,11 +152,8 @@ components: {
 
         //se debe validar usuario registrado sino hay session no puede modificar registros.
         try {
-            const res = await this.axios.post("/metodos/todos");
-            this.metodos = res.data.metodos;
-
-            //console.log("created")
-            //console.log(this.metodos);
+            const res = await this.axios.get("/api/documents");
+            this.metodos = res.data.documents;
 
         } catch (error) {
             console.log(error);
@@ -180,7 +177,7 @@ components: {
             if (valid) {
                 this.metodoToAdd.contenthtml = this.content;
                 try {
-                    const res = await this.axios.post('/metodos/nuevo', this.metodoToAdd);
+                    const res = await this.axios.post('/methods/nuevo', this.metodoToAdd);
                     //console.log(res.data.record);
                     this.metodos.push(res.data.record);
                     this.content = '';
@@ -209,7 +206,7 @@ components: {
         },
         async delMetodo(id) {
             try {
-                const record = await this.axios.delete(`/metodos/eliminar/${id}`);
+                const record = await this.axios.delete(`/methods/eliminar/${id}`);
 
                 this.delShow = false;
 
@@ -240,7 +237,7 @@ components: {
 
             if (valid) {
                 try {
-                    const record = await this.axios.put('/metodos/editar', this.metodoToEdit)
+                    const record = await this.axios.put('/methods/editar', this.metodoToEdit)
                     
                     this.editShow = false;
 

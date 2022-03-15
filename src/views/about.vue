@@ -1,7 +1,7 @@
 <template>
 <v-container grid-list-md>
     <v-col cols="12">
-        <v-img :src="require('../assets/logo.png')" class="my-3" contain height="200" />
+        <v-img :src="require('@/assets/logo.png')" class="my-3" contain height="200" />
     </v-col>
     <h1 class="text-center">Colaboradores</h1>
     <p class="text-center">

@@ -1,20 +1,15 @@
 <template>
-
-  <div class="ma-12 pa-12">
-
-        <hello-world />
-
-  </div>
+  <v-container>
+      <h2>This is the HOME page.</h2>
+  </v-container>
 </template>
 
 <script>
-  import HelloWorld from '../components/HelloWorld'
+export default {
 
-  export default {
-    name: 'Home',
-
-    components: {
-      HelloWorld,
-    },
-  }
+}
 </script>
+
+<style>
+
+</style>

@@ -3,8 +3,9 @@
     
       <v-app-bar
       dark
-      absolute
+      
       dense
+      fixed
     >
 
       <v-toolbar-title></v-toolbar-title>
@@ -18,6 +19,7 @@
     <cabecera/>
     <v-main>
       <v-container fluid>
+ 
         <router-view />
       </v-container>
     </v-main>
@@ -25,7 +27,7 @@
 </template>
 
 <script>
-import Cabecera from "./components/Cabecera.vue";
+import Cabecera from "./components/Menu.vue";
 export default {
   name: "App",
   components: {

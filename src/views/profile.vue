@@ -1,10 +1,10 @@
 <template>
-<v-container id="user-profile" fluid tag="section">
+<v-container
+ id="user-profile" fluid tag="section">
     <v-row justify="center">
         <v-col cols="12" md="8"></v-col>
         <v-col cols="12" md="8"></v-col>
         <v-col cols="12" md="8"></v-col>
-
         <v-col cols="12" md="8">
             <base-material-card>
                 <template v-slot:heading>
@@ -102,7 +102,7 @@ export default {
     created() {
 
         if (!this.$store.state.auth) {
-            this.$router.push("/");
+            this.$router.push("/notFound");
             //si no hay usuario auth no debe acceder a pagina profile
         }
     },

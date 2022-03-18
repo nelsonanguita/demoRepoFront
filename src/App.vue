@@ -2,11 +2,8 @@
   <v-app>
       <menuNavegation/>     
       <barlogin/>
-  
-    
     <v-main>
       <v-container fluid>
- 
         <router-view />
       </v-container>
     </v-main>
@@ -16,6 +13,7 @@
 <script>
 import Menu from "./components/VistaApp/Menu.vue"
 import Barlogin from "./components/VistaApp/NavBar.vue";
+import { mapActions } from "vuex";
 
 export default {
   name: "App",
@@ -23,17 +21,21 @@ export default {
     menuNavegation: Menu,
     barlogin: Barlogin
   },
+  beforeCreate(){
+  
+  },
   created(){
-    this.readLocalStorage();
+    this.readStorage();
   },
   data: () => ({
 
     //
   }),
   methods:{
-    readLocalStorage(){
-      this.$store.dispatch('readStorage');
-    }
+    ...mapActions(['readStorage'])
+    //readLocalStorage(){
+      //this.$store.dispatch('readStorage');
+    //}
   }
 };
 </script>

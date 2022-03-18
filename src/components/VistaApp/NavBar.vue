@@ -42,7 +42,7 @@
                                     PROFILE
                                 </v-btn>
                                 <v-divider class="my-3"></v-divider>
-                                <v-btn depressed rounded text @click="logout()">
+                                <v-btn depressed rounded text @click="out()">
                                     LOGOUT
                                 </v-btn>
                             </div>
@@ -76,7 +76,7 @@
                                     <v-text-field v-model="credentials.password" label="Password" outlined dense color="blue" autocomplete="false" type="password" />
                                     <v-row>
                                     </v-row>
-                                    <v-btn color="blue" dark block tile @click="login()">Log in</v-btn>
+                                    <v-btn color="blue" dark block tile @click="log()">Log in</v-btn>
                                     <h5 class="text-center  grey--text mt-4 mb-3"></h5>
                                     <div>
                                         <v-alert dense text dismissible border="left" v-model="alert.show" :type="alert.type">
@@ -110,6 +110,9 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
+
 export default {
     data: () => ({
         step: 1,
@@ -138,18 +141,20 @@ export default {
         source: String
     },
     methods: {
-        logout() {
-            const res =this.$store.dispatch('logout');
+        ...mapActions(['login','logout']),
+        out() {
+            const res =this.logout();
             this.showBtnLogin = true;
             this.$router.push("/");
 
         },
-        async login() {
+        async log() {
             let valid = this.$refs.formLogin.validate()
             if (valid) {
                 this.Showfrom = false;
                 try {
-                    const res = await this.$store.dispatch('login', this.credentials);
+                    const res = await this.login(this.credentials);
+                    //const res = await this.$store.dispatch('login', this.credentials);
                     if (res) {
                         this.showBtnLogin = false;
                         this.showdialog();

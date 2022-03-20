@@ -145,7 +145,7 @@ export default {
         out() {
             const res =this.logout();
             this.showBtnLogin = true;
-            this.$router.push("/");
+            this.$router.push('/');
 
         },
         async log() {

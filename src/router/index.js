@@ -49,7 +49,11 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => { 
 //el store de Vuex, al recargar la pagina se carga despues del router
   //por eso tuve que validar si estaba en el storage,
-  const authenticated = !!JSON.parse(localStorage.getItem('user'));
+  //const authenticated = !!JSON.parse(localStorage.getItem('user'));
+  const authenticated = localStorage.getItem('userHash') ? true : false;
+  //console.log(authenticated);
+  console.log('authenticatedHASH ->', authenticated);
+
   if (to.matched.some((record)=>record.meta.requiresAuth)) {
     if (authenticated) {
       next();

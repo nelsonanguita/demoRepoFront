@@ -33,7 +33,7 @@ export default new Vuex.Store({
           return true
 
         } catch (error) {
-          console.log(error);
+          //console.log(error);
           commit("SET_USER_LOGOUT", { auth: false });
           return false
         }
@@ -47,7 +47,7 @@ export default new Vuex.Store({
 
     readStorage({ commit }) { 
       let valid = localStorage.getItem('userHash') ? true:false;
-      console.log('readStorage', valid)
+      //console.log('readStorage', valid)
       if (valid) {
         commit("SET_USER_LOGIN", JSON.parse(atob(localStorage.getItem('userHash'))));
       } else { 

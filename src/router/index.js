@@ -52,7 +52,7 @@ router.beforeEach((to, from, next) => {
   //const authenticated = !!JSON.parse(localStorage.getItem('user'));
   const authenticated = localStorage.getItem('userHash') ? true : false;
   //console.log(authenticated);
-  console.log('authenticatedHASH ->', authenticated);
+  //console.log('authenticatedHASH ->', authenticated);
 
   if (to.matched.some((record)=>record.meta.requiresAuth)) {
     if (authenticated) {

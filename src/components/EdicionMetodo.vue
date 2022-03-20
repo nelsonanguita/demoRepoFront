@@ -6,9 +6,16 @@ v-container(class="my-6")
     v-row(justify="center")
         v-dialog(v-model="editShow")
             v-card
-                v-card-title Editar Método
+                v-toolbar(color="blue" dark dense flat)
+                    v-icon mdi-pencil
+                    v-toolbar-title Editar Documento
+                    v-spacer
+                    v-btn(icon @click="editShow=false")
+                     v-icon mdi-close
                 v-card-text
                     v-form(ref="formEditDocument" @submit.prevent="editDocument()")
+                        v-row
+                            v-col 
                         v-row
                             v-col 
                                 v-text-field( outlined  label="Nombre del Método" :rules="[(v) => !!v || 'Nombre es requerido']" v-model="documentToEdit.name")

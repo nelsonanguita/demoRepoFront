@@ -143,9 +143,11 @@ export default {
     methods: {
         ...mapActions(['login','logout']),
         out() {
-            const res =this.logout();
+            this.logout();
             this.showBtnLogin = true;
-            this.$router.push('/');
+            if(this.$route.meta.requiresAuth){
+                this.$router.push('/');
+            }
 
         },
         async log() {

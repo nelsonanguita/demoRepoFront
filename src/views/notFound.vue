@@ -1,10 +1,10 @@
 <template>
 <v-container justify="center" fill-height>
-    <v-row justify="center" align="">
+    <v-row justify="center" >
         <v-col>
         </v-col>
     </v-row>
-    <v-row justify="center" align="">
+    <v-row justify="center" >
         <v-col>
         </v-col>
     </v-row>

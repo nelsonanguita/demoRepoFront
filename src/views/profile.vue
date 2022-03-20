@@ -97,7 +97,7 @@
 </template>
 
 <script>
-import baseMaterialCard from '../components/About.vue'
+import baseMaterialCard from '../components/materialCard.vue'
 export default {
     created() {
 

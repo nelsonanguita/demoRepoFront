@@ -1,7 +1,6 @@
 <template lang="pug">
 v-container(class="my-6") 
     v-alert(v-model="alert.show" :type="alert.type" dismissible) {{alert.message}}
-
     v-btn(v-if="$store.state.auth" fab fixed color="success" :right="true" bottom @click="showNuevo=true")
         v-icon mdi-plus
     v-row(justify="center")
@@ -36,10 +35,17 @@ v-container(class="my-6")
         v-dialog(v-model="showNuevo")
 
             v-card
-                v-card-title Crear Nuevo Documento
-                    v-toolbar-title 
+                v-toolbar(color="blue" dark dense flat)
+                    v-icon mdi-clipboard-plus
+                    v-toolbar-title Nuevo Documento
+                    v-spacer
+                    v-btn(icon @click="showNuevo=false")
+                     v-icon mdi-close
+                     
                 v-card-text
                     v-form(ref="fromAddDocuments" @submit.prevent="addDocuments()")
+                        v-row
+                            v-col 
                         v-row
                             v-col 
                                 v-text-field( outlined  label="Nombre documento" :rules="[(v) => !!v || 'Nombre es requerido']" v-model="documentToAdd.name")
@@ -50,11 +56,10 @@ v-container(class="my-6")
                             v-col
 
                                 vue-editor(v-model="content")
-
+                    v-divider
                     v-card-actions
-                        v-btn(text color="error" @click="showNuevo=false") CERRAR
+                        v-btn(text color="error" @click="closeFormNew()") CERRAR
                         v-btn(text type="submit" color="primary" @click="addDocuments()") GUARDAR
-
     v-row(justify="center")
         v-dialog(v-model="show"  max-width="600px" max-height="600")
 
@@ -71,15 +76,16 @@ v-container(class="my-6")
                         v-icon(dark left x-small) mdi-checkbox-marked-circle
 
         v-col(class="mb-1" cols="12")
-            h2(class="headline font-weight-bold mb-3 " ) Documentos
 
         v-col(class="mb-5" cols="12")
+            base-material-card 
+                template( v-slot:heading)
+                    div(class="display-1 font-weight-light") Documentos
+                    div(class="subtitle-3 font-weight-light") todos los documentos relacionados a la categoria seleccionada en el menú
+                    
+                v-text-field(v-model="search" label="Buscar" prepend-icon="mdi-magnify")
 
-            v-card 
-                v-card-title
-                    v-text-field(v-model="search" label="Buscar" prepend-icon="mdi-magnify")
-
-                v-data-table(:headers="headers" :items="documents" :search="search")
+                v-data-table(:headers="headers" :items="documents" :search="search" :loading="loadTable")
                     <template v-slot:item.actions="{ item }">
                         v-icon(dark color="purple" class="mr-2"  @click="showDocument(item)") mdi-eye
                         v-icon(v-if="$store.state.auth" dark color="red" class="mr-2"  @click="setDocumentsToDel(item)") mdi-delete
@@ -91,13 +97,17 @@ v-container(class="my-6")
 import {
     VueEditor
 } from "vue2-editor";
+import baseMaterialCard from '../components/materialCard.vue'
+
 export default {
     components: {
-        VueEditor
+        VueEditor,
+        baseMaterialCard
     },
     data() {
         return {
             content: "",
+            loadTable:false,
             documents: [],
             alert: {
                 type: 'success',
@@ -142,8 +152,10 @@ export default {
 
         //se debe validar usuario registrado sino hay session no puede modificar registros.
         try {
+            this.loadTable = true;
             const res = await this.axios.get("/api/documents");
             this.documents = res.data.documents;
+            this.loadTable = false;
 
         } catch (error) {
             console.log(error);
@@ -154,6 +166,10 @@ export default {
     methods: {
         saveContent: function () {
             // You have the content to save
+        },
+        closeFormNew(){
+            this.showNuevo=false;
+            this.$refs.fromAddDocuments.reset();
         },
         showDocument(item) {
             this.documentSel = item;

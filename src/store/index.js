@@ -33,8 +33,7 @@ export default new Vuex.Store({
 
     logout({ commit}) { 
       commit("SET_USER", null);
-    }
-
+    },
 
  
 

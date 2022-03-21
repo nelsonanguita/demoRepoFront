@@ -4,8 +4,8 @@
       <barlogin/>
   
     
-    <v-main>
-      <v-container fluid>
+    <v-main >
+      <v-container >
  
         <router-view />
       </v-container>
@@ -33,4 +33,10 @@ export default {
 {
   background-color: rgba(0,0,0,.1);
 }
+
+body {
+  background-repeat: no-repeat;
+  background-position: right top;
+}
+
 </style>

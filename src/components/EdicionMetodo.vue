@@ -1,5 +1,8 @@
 <template lang="pug">
 v-container(class="my-6") 
+
+    
+
     v-alert(v-model="alert.show" :type="alert.type" dismissible) {{alert.message}}
 
     v-btn(fab fixed color="success" :right="true" bottom @click="showNuevo=true")
@@ -80,7 +83,8 @@ v-container(class="my-6")
 
 
         v-col(class="mb-1" cols="12")
-            h2(class="headline font-weight-bold mb-3 text-center" ) LISTADO DE METODOS
+            h2(class="headline font-weight-bold mb-3 text-center" ) LISTADO DE METODOS 
+            
 
         v-col(class="mb-5" cols="12")
 
@@ -97,14 +101,17 @@ v-container(class="my-6")
 </template>
 
 <script>
-
+import Menu from '../components/VistaApp/Menu.vue'
 import { VueEditor } from "vue2-editor";
 export default {
-components: {
-    VueEditor
+    components: {
+    VueEditor,
+    Menu
   },
       data() {
     return {
+        id:0,
+        idSubcategoria:0,
         content: "",
         metodos: [],
         alert: {
@@ -148,19 +155,9 @@ components: {
             ],
     };
   },
-  created: async function () {
-
-        //se debe validar usuario registrado sino hay session no puede modificar registros.
-        try {
-            const res = await this.axios.get("/api/documents");
-            this.metodos = res.data.documents;
-
-        } catch (error) {
-            console.log(error);
-        }
-
-    },
-
+  created(){
+    this.obtenerSubcategorias(this.idSubcategoria)
+  } ,
   methods: {
     saveContent: function() {
       // You have the content to save
@@ -200,11 +197,11 @@ components: {
             }
 
         },
-        setMetodoToDel(item) {
+    setMetodoToDel(item) {
             this.metodoToDel = item;
             this.delShow = true;
-        },
-        async delMetodo(id) {
+    },
+    async delMetodo(id) {
             try {
                 const record = await this.axios.delete(`/methods/eliminar/${id}`);
 
@@ -226,12 +223,12 @@ components: {
 
         },
 
-        setMetodoToEdit(item) {
+    setMetodoToEdit(item) {
             this.editShow = true;
             this.content = '';
             this.metodoToEdit = item;
-        },
-        async editMetodo() {
+    },
+    async editMetodo() {
             //console.log(this.metodoToEdit);
             let valid = this.$refs.fromEditMetodo.validate();
 
@@ -254,9 +251,28 @@ components: {
 
             }
 
+        },
+    async obtenerSubcategorias(ID){
+        
+        try {
+            const res = await this.axios.get(`/api/documents/subcategory/${ID}`);
+            this.metodos = res.data.document;
+            
+        } catch (error) {
+            console.log(error);
         }
+    },
+},
+
+  watch: {
+    '$route.fullPath': function () {
+     this.obtenerSubcategorias(this.$route.params.idFa)
+     console.log(this.$route.params.idFa)
+
+  },
 
 }
+
 }
 
 </script>

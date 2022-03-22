@@ -86,8 +86,6 @@ v-container(class="my-6")
                         v-icon(dark left x-small) mdi-checkbox-marked-circle
 
         v-col(class="mb-1" cols="12")
-            h2(class="headline font-weight-bold mb-3 text-center" ) LISTADO DE METODOS 
-            
 
         v-col(class="mb-5" cols="12")
             base-material-card 
@@ -108,17 +106,21 @@ v-container(class="my-6")
 <script>
 import Menu from '../components/VistaApp/Menu.vue'
 import { VueEditor } from "vue2-editor";
+import baseMaterialCard from '../components/materialCard.vue';
+
 export default {
     components: {
     VueEditor,
+    baseMaterialCard,
     Menu
   },
       data() {
     return {
+        loadTable:false,
         id:0,
-        idSubcategoria:0,
+        idSubcategoria:1,
         content: "",
-        metodos: [],
+        documents: [],
         alert: {
                 type: 'success',
                 message: '',
@@ -136,6 +138,7 @@ export default {
             showNuevo: false,
             show: false,
             search: '',
+            documentSel:{},
             documentToAdd: {
                 name: '',
                 description: '',
@@ -164,11 +167,11 @@ export default {
   methods: {
     saveContent: function() {
       // You have the content to save
-      console.log(this.content);
+      //console.log(this.content);
     },
-    MostrarMetodo(item) {
+    showDocument(item) {
             //console.log(item);
-            this.metodoSel = item;
+            this.documentSel = item;
             this.show = true;
 
         },
@@ -199,11 +202,11 @@ export default {
             }
 
         },
-    setMetodoToDel(item) {
-            this.metodoToDel = item;
+    setDocumentsToDel(item) {
+            this.documentToDel = item;
             this.delShow = true;
     },
-    async delMetodo(id) {
+    async delDocument(id) {
             try {
                 const document = await this.axios.delete(`/api/documents/${id}`);
                 this.delShow = false;
@@ -222,14 +225,13 @@ export default {
 
         },
 
-    setMetodoToEdit(item) {
+    setDocumentToEdit(item) {
             this.editShow = true;
             this.content = '';
-            this.metodoToEdit = item;
+            this.documentToEdit = item;
     },
-    async editMetodo() {
-            //console.log(this.metodoToEdit);
-            let valid = this.$refs.fromEditMetodo.validate();
+    async editDocument() {
+            let valid = this.$refs.fromEditDocument.validate();
 
             if (valid) {
                 try {
@@ -254,8 +256,7 @@ export default {
         
         try {
             const res = await this.axios.get(`/api/documents/subcategory/${ID}`);
-            this.metodos = res.data.document;
-            
+            this.documents = res.data.document;
         } catch (error) {
             console.log(error);
         }
@@ -265,7 +266,7 @@ export default {
   watch: {
     '$route.fullPath': function () {
      this.obtenerSubcategorias(this.$route.params.idFa)
-     console.log(this.$route.params.idFa)
+     //console.log(this.$route.params.idFa)
 
   },
 

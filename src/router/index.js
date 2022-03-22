@@ -1,5 +1,4 @@
 import Vue from 'vue'
-import store from '../store/index.js'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 
@@ -33,8 +32,10 @@ const routes = [
   {
     path: '/profile',
     name: 'Profile',
-    component: () => import(/* webpackChunkName: "Profile" */ '../views/Profile.vue')
-  },
+    component: () => import(/* webpackChunkName: "Profile" */ '../views/profile.vue'),
+    meta: { requiresAuth: true }
+},
+  
   {
     path: '/documentacion/:archivo/:idFa',
     name: 'Documentacion',

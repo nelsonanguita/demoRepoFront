@@ -2,16 +2,9 @@
   <v-app>
       <menuNavegation/>     
       <barlogin/>
-<<<<<<< HEAD
-    <v-main>
-      <v-container fluid>
-=======
-  
-    
     <v-main >
       <v-container >
  
->>>>>>> a602793b84906e38816a8997c975752788ea3896
         <router-view />
       </v-container>
     </v-main>

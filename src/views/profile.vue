@@ -1,5 +1,7 @@
 <template>
+<v-container>
     <formularioCredenciales/>
+</v-container>
 </template>
 
 <script>

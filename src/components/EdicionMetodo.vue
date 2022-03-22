@@ -1,8 +1,5 @@
 <template lang="pug">
 v-container(class="my-6") 
-
-    
-
     v-alert(v-model="alert.show" :type="alert.type" dismissible) {{alert.message}}
     v-btn(v-if="$store.state.auth" fab fixed color="success" :right="true" bottom @click="showNuevo=true")
         v-icon mdi-plus
@@ -14,7 +11,7 @@ v-container(class="my-6")
                     v-toolbar-title Editar Documento
                     v-spacer
                     v-btn(icon @click="editShow=false")
-                     v-icon mdi-close
+                        v-icon mdi-close
                 v-card-text
                     v-form(ref="formEditDocument" @submit.prevent="editDocument()")
                         v-row
@@ -50,18 +47,18 @@ v-container(class="my-6")
                     v-toolbar-title Nuevo Documento
                     v-spacer
                     v-btn(icon @click="showNuevo=false")
-                     v-icon mdi-close
-                     
+                        v-icon mdi-close
+
                 v-card-text
-                    v-form(ref="fromAddDocuments" @submit.prevent="addDocuments()")
+                    v-form(ref="formAddDocuments" @submit.prevent="addDocuments()")
                         v-row
                             v-col 
                         v-row
                             v-col 
-                                v-text-field( outlined  label="Nombre documento" :rules="[(v) => !!v || 'Nombre es requerido']" v-model="documentToAdd.name")
+                                v-text-field( outlined  label="Nombre documento" :rules="[(v) => !!v || 'Nombre es requerido']" v-model="name")
                         v-row 
                             v-col
-                                v-textarea( outlined  label="Descripción Breve" :rules="[(v) => !!v || 'Descripcion es requerido']" v-model="documentToAdd.description")
+                                v-textarea( outlined  label="Descripción Breve" :rules="[(v) => !!v || 'Descripcion es requerido']" v-model="description")
                         v-row
                             v-col
 
@@ -88,11 +85,11 @@ v-container(class="my-6")
         v-col(class="mb-1" cols="12")
 
         v-col(class="mb-5" cols="12")
-            base-material-card 
+            base-material-card
                 template( v-slot:heading)
-                    div(class="display-1 font-weight-light") Documentos
+                    div(class="display-1 font-weight-light") Documentos de {{titleSubcategory}}
                     div(class="subtitle-3 font-weight-light") todos los documentos relacionados a la categoria seleccionada en el menú
-                    
+
                 v-text-field(v-model="search" label="Buscar" prepend-icon="mdi-magnify")
 
                 v-data-table(:headers="headers" :items="documents" :search="search" :loading="loadTable")
@@ -105,23 +102,26 @@ v-container(class="my-6")
 
 <script>
 import Menu from '../components/VistaApp/Menu.vue'
-import { VueEditor } from "vue2-editor";
+import {
+    VueEditor
+} from "vue2-editor";
 import baseMaterialCard from '../components/materialCard.vue';
 
 export default {
     components: {
-    VueEditor,
-    baseMaterialCard,
-    Menu
-  },
-      data() {
-    return {
-        loadTable:false,
-        id:0,
-        idSubcategoria:1,
-        content: "",
-        documents: [],
-        alert: {
+        VueEditor,
+        baseMaterialCard,
+        Menu
+    },
+    data() {
+        return {
+            titleSubcategory: '',
+            loadTable: true,
+            id: 0,
+            idSubcategoria: 0,
+            content: "",
+            documents: [],
+            alert: {
                 type: 'success',
                 message: '',
                 show: false,
@@ -138,12 +138,16 @@ export default {
             showNuevo: false,
             show: false,
             search: '',
-            documentSel:{},
+            documentSel: {},
+            name: '',
+            description: '',
             documentToAdd: {
                 name: '',
                 description: '',
                 contenthtml: '',
                 id_usuario: 1,
+                id_subcategory: 0,
+
             },
             headers: [{
                     text: "Nombre",
@@ -159,31 +163,40 @@ export default {
                     sortable: false
                 },
             ],
-    };
-  },
-  created(){
-    this.obtenerSubcategorias(this.idSubcategoria)
-  } ,
-  methods: {
-    saveContent: function() {
-      // You have the content to save
-      //console.log(this.content);
+        };
     },
-    showDocument(item) {
+    created() {
+
+        this.titleSubcategory = this.$route.params.idFa;
+        this.obtenerSubcategorias(this.$route.params.idFa)
+
+    },
+    methods: {
+        saveContent: function () {
+            // You have the content to save
+            //console.log(this.content);
+        },
+        showDocument(item) {
             //console.log(item);
             this.documentSel = item;
             this.show = true;
 
         },
         async addDocuments() {
-            let valid = this.$refs.fromAddDocuments.validate();
+
+            let valid = this.$refs.formAddDocuments.validate();
+
             if (valid) {
                 this.documentToAdd.contenthtml = this.content;
+                this.documentToAdd.name = this.name;
+                this.documentToAdd.description = this.description;
+
                 try {
+                    this.documentToAdd.id_subcategory = parseInt(this.$route.params.idFa);
                     const res = await this.axios.post('/api/documents', this.documentToAdd);
                     this.documents.push(res.data.document);
                     this.content = '';
-                    this.$refs.fromAddDocuments.reset();
+                    this.$refs.formAddDocuments.reset();
                     this.showNuevo = false;
                     this.alert.show = true;
                     this.alert.type = 'success';
@@ -192,7 +205,7 @@ export default {
                 } catch (error) {
                     this.showNuevo = false;
                     this.content = ''
-                    this.$refs.fromAddDocuments.reset();
+                    this.$refs.formAddDocuments.reset();
                     this.alert.show = true;
                     this.alert.type = 'error';
                     this.alert.message = 'No es posible crear métodos con el mismo nombre'
@@ -202,18 +215,18 @@ export default {
             }
 
         },
-    setDocumentsToDel(item) {
+        setDocumentsToDel(item) {
             this.documentToDel = item;
             this.delShow = true;
-    },
-    async delDocument(id) {
+        },
+        async delDocument(id) {
             try {
                 const document = await this.axios.delete(`/api/documents/${id}`);
                 this.delShow = false;
                 let pos = this.documents.findIndex((m) => m.id == id);
                 this.documents.splice(pos, 1);
                 this.alert.show = true;
-                this.alert.type = 'primary';
+                this.alert.type = 'success';
                 this.alert.message = 'Registro Eliminado'
 
             } catch (error) {
@@ -225,13 +238,13 @@ export default {
 
         },
 
-    setDocumentToEdit(item) {
+        setDocumentToEdit(item) {
             this.editShow = true;
             this.content = '';
             this.documentToEdit = item;
-    },
-    async editDocument() {
-            let valid = this.$refs.fromEditDocument.validate();
+        },
+        async editDocument() {
+            let valid = this.$refs.formEditDocument.validate();
 
             if (valid) {
                 try {
@@ -252,29 +265,31 @@ export default {
             }
 
         },
-    async obtenerSubcategorias(ID){
-        
-        try {
-            const res = await this.axios.get(`/api/documents/subcategory/${ID}`);
-            this.documents = res.data.document;
-        } catch (error) {
-            console.log(error);
-        }
+        async obtenerSubcategorias(ID) {
+
+            try {
+                this.loadTable = true;
+                const res = await this.axios.get(`/api/documents/subcategory/${ID}`);
+                this.documents = res.data.document;
+                this.titleSubcategory = this.$route.params.archivo;
+
+                this.loadTable = false;
+
+            } catch (error) {
+                console.log(error);
+            }
+        },
     },
-},
 
-  watch: {
-    '$route.fullPath': function () {
-     this.obtenerSubcategorias(this.$route.params.idFa)
-     //console.log(this.$route.params.idFa)
+    watch: {
+        '$route.fullPath': function () {
+            this.obtenerSubcategorias(this.$route.params.idFa)
+            //console.log(this.$route.params.idFa)
 
-  },
+        },
 
     }
 }
-
-
-
 </script>
 
 <style>

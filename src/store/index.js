@@ -40,14 +40,13 @@ export default new Vuex.Store({
     },
 
     logout({ commit}) { 
-      commit("SET_USER", null);
+      commit("SET_USER_LOGOUT", { auth: false });
     },
 
  
 
     readStorage({ commit }) { 
       let valid = localStorage.getItem('userHash') ? true:false;
-      //console.log('readStorage', valid)
       if (valid) {
         commit("SET_USER_LOGIN", JSON.parse(atob(localStorage.getItem('userHash'))));
       } else { 

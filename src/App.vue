@@ -2,8 +2,16 @@
   <v-app>
       <menuNavegation/>     
       <barlogin/>
+<<<<<<< HEAD
     <v-main>
       <v-container fluid>
+=======
+  
+    
+    <v-main >
+      <v-container >
+ 
+>>>>>>> a602793b84906e38816a8997c975752788ea3896
         <router-view />
       </v-container>
     </v-main>
@@ -44,4 +52,10 @@ export default {
 {
   background-color: rgba(0,0,0,.1);
 }
+
+body {
+  background-repeat: no-repeat;
+  background-position: right top;
+}
+
 </style>

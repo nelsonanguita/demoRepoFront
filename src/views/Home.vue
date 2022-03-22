@@ -21,7 +21,7 @@ v-container(class="my-6")
  v-row(v-for="n in 6" :key="n"
       )
   v-col(v-for="k in n+1" :key="k")
-   v-card(class="pa-2" outlined height="75px" dark)
+   v-card(class="pa-2" outlined height="140px" dark)
 
 </template>
 

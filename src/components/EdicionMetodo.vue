@@ -1,5 +1,8 @@
 <template lang="pug">
 v-container(class="my-6") 
+
+    
+
     v-alert(v-model="alert.show" :type="alert.type" dismissible) {{alert.message}}
     v-btn(v-if="$store.state.auth" fab fixed color="success" :right="true" bottom @click="showNuevo=true")
         v-icon mdi-plus
@@ -83,6 +86,8 @@ v-container(class="my-6")
                         v-icon(dark left x-small) mdi-checkbox-marked-circle
 
         v-col(class="mb-1" cols="12")
+            h2(class="headline font-weight-bold mb-3 text-center" ) LISTADO DE METODOS 
+            
 
         v-col(class="mb-5" cols="12")
             base-material-card 
@@ -101,22 +106,20 @@ v-container(class="my-6")
 </template>
 
 <script>
-import {
-    VueEditor
-} from "vue2-editor";
-import baseMaterialCard from '../components/materialCard.vue'
-
+import Menu from '../components/VistaApp/Menu.vue'
+import { VueEditor } from "vue2-editor";
 export default {
     components: {
-        VueEditor,
-        baseMaterialCard
-    },
-    data() {
-        return {
-            content: "",
-            loadTable:false,
-            documents: [],
-            alert: {
+    VueEditor,
+    Menu
+  },
+      data() {
+    return {
+        id:0,
+        idSubcategoria:0,
+        content: "",
+        metodos: [],
+        alert: {
                 type: 'success',
                 message: '',
                 show: false,
@@ -153,33 +156,19 @@ export default {
                     sortable: false
                 },
             ],
-        };
+    };
+  },
+  created(){
+    this.obtenerSubcategorias(this.idSubcategoria)
+  } ,
+  methods: {
+    saveContent: function() {
+      // You have the content to save
+      console.log(this.content);
     },
-    created: async function () {
-
-        //se debe validar usuario registrado sino hay session no puede modificar registros.
-        try {
-            this.loadTable = true;
-            const res = await this.axios.get("/api/documents");
-            this.documents = res.data.documents;
-            this.loadTable = false;
-
-        } catch (error) {
-            console.log(error);
-        }
-
-    },
-
-    methods: {
-        saveContent: function () {
-            // You have the content to save
-        },
-        closeFormNew(){
-            this.showNuevo=false;
-            this.$refs.fromAddDocuments.reset();
-        },
-        showDocument(item) {
-            this.documentSel = item;
+    MostrarMetodo(item) {
+            //console.log(item);
+            this.metodoSel = item;
             this.show = true;
 
         },
@@ -210,11 +199,11 @@ export default {
             }
 
         },
-        setDocumentsToDel(item) {
-            this.documentToDel = item;
+    setMetodoToDel(item) {
+            this.metodoToDel = item;
             this.delShow = true;
-        },
-        async delDocument(id) {
+    },
+    async delMetodo(id) {
             try {
                 const document = await this.axios.delete(`/api/documents/${id}`);
                 this.delShow = false;
@@ -233,13 +222,15 @@ export default {
 
         },
 
-        setDocumentToEdit(item) {
+    setMetodoToEdit(item) {
             this.editShow = true;
             this.content = '';
-            this.documentToEdit = item;
-        },
-        async editDocument() {
-            let valid = this.$refs.formEditDocument.validate();
+            this.metodoToEdit = item;
+    },
+    async editMetodo() {
+            //console.log(this.metodoToEdit);
+            let valid = this.$refs.fromEditMetodo.validate();
+
             if (valid) {
                 try {
                     this.documentToEdit.id_user = this.$store.state.userSession.user.id;
@@ -258,10 +249,31 @@ export default {
 
             }
 
+        },
+    async obtenerSubcategorias(ID){
+        
+        try {
+            const res = await this.axios.get(`/api/documents/subcategory/${ID}`);
+            this.metodos = res.data.document;
+            
+        } catch (error) {
+            console.log(error);
         }
+    },
+},
+
+  watch: {
+    '$route.fullPath': function () {
+     this.obtenerSubcategorias(this.$route.params.idFa)
+     console.log(this.$route.params.idFa)
+
+  },
 
     }
 }
+
+
+
 </script>
 
 <style>

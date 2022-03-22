@@ -1,6 +1,8 @@
 <template>
+
     <div>
-        <edicionMetodo/>
+        <edicionMetodo
+        />
     </div>
 </template>
 
@@ -10,6 +12,7 @@ export default {
     components:{
         'edicionMetodo': EdicionMetodo
     },
+
 }
 </script>
 

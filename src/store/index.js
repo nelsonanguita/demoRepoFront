@@ -39,11 +39,11 @@ export default new Vuex.Store({
         }
     },
 
-    logout({ commit }) { 
-      //localStorage.clear('userHash', null);
-      commit("SET_USER_LOGOUT", { auth: false });
-      localStorage.clear();
+    logout({ commit}) { 
+      commit("SET_USER", null);
     },
+
+ 
 
     readStorage({ commit }) { 
       let valid = localStorage.getItem('userHash') ? true:false;

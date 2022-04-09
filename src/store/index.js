@@ -41,6 +41,7 @@ export default new Vuex.Store({
 
     logout({ commit}) { 
       commit("SET_USER_LOGOUT", { auth: false });
+      localStorage.setItem('userHash', null);
     },
 
  

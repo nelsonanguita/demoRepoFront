@@ -105,7 +105,7 @@ import Menu from '../components/VistaApp/Menu.vue'
 import {
     VueEditor
 } from "vue2-editor";
-import baseMaterialCard from '../components/materialCard.vue';
+import baseMaterialCard from '../components/templateCard.vue';
 
 export default {
     components: {
